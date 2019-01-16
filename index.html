@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Set cookie </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 jumbotron">
+                <h3>Set the username to be stored in Cookie</h3>
+                <form action="" method="post" >
+                    <div class="form-group">
+                        <label for="userName">Insert the User Name</label>
+                        <input id="userNameInput" type="text" class="form-control" placeholder="e.g. Hugo">
+                    </div>
+                    <div class="form-group  text-right">
+                        <button id="formBtn" type="submit" class="btn btn-primary">Set</button>
+                    </div>
+                </form>
+                <div id="alert" class="alert alert-danger">
+                    UserName is not found in browser Cookie!  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+                
+        // Set cookie 
+
+        function setCookie(cname, cvalue, cexpire) {
+
+            var d = new Date();
+
+            // below, we set a time for cookie expires in seconds
+            // for setup to expire in days, use ( cexpire*24*60*60*1000 ) background: red;
+
+            d.setTime(d.getTime() + (cexpire*1000));
+
+            var exp = 'expires=' + d.toUTCString();
+
+            console.log(exp);
+
+            document.cookie = cname + '=' + cvalue + ';' + exp + ';path=/';
+            
+        }
+
+        // Get cookie
+
+        function getCookie(cname) {
+            var name = cname + '=';
+            var decode = decodeURIComponent(document.cookie);
+            var ca = decode.split(';');
+            for(i = 0; i < ca.length; i++){
+                var c = ca[i];
+                while(c.charAt(0) == ''){
+                    c = c.substring(1);
+                }
+                if(c.indexOf(name) == 0){
+                    return c.substring(name.length, c.length)
+                }
+            }
+            return "";
+        }
+
+        var input = document.getElementById('userNameInput');
+
+        var alert = document.getElementById('alert');
+
+        document.getElementById('formBtn').addEventListener('click', function(e){
+        
+            e.preventDefault();
+            
+            var user = input.value;
+
+            if(user){
+
+                // set cookie value 
+
+                setCookie('userName', user, 30);
+
+                // change alert div class 
+
+                alert.classList.remove('alert-danger');
+                
+                alert.classList.add('alert-success');
+
+                // display cookie value
+
+                alert.value = ''; 
+
+                alert.innerHTML = 'Set userName cookie to ' + user;
+
+            } else {
+
+                alert.classList.remove('alert-success');
+                
+                alert.classList.add('alert-danger');
+
+                alert.innerHTML = 'UserName is not found in browser Cookie!'
+
+            }
+            
+        });
+           
+        </script>
+</body>
+</html>
